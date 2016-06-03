@@ -10,11 +10,22 @@
   args:
     creates: /etc/krb5.keytab
 
+# Save backup here since --savebackup is naughty.
 - name: authconfig
-  shell: "/usr/sbin/authconfig --enablesssd --enablesssdauth --disableldap --disableldapauth --enablemkhomedir --savebackup=ansible_configured --update"
+  shell: "/usr/sbin/authconfig --savebackup=pre-authconfig-adcli"
   args:
-    creates: /var/lib/authconfig/backup-ansible_configured
-  notify: restart sssd
+    creates: /var/lib/authconfig/backup-pre-authconfig-adcli
+
+
+# Note that we are not using --savebackup here. For some reason it causes several other options to stop working.
+# --nostart is used because we don't have the template files created for krb5.conf and sssd.conf yet.
+- name: authconfig
+  shell: "/usr/sbin/authconfig --enablesssd --enablesssdauth --disableldap --disableldapauth --enablemkhomedir --update --nostart && touch /var/lib/authconfig/ansible_configured"
+  args:
+    creates: /var/lib/authconfig/ansible_configured
+  notify:
+    - "restart sssd"
+    - "restart oddjob"
 
 # On Cent/EL 6 nsswitch.conf is not updated.
 - name: nsswitch passwd
