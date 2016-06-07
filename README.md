@@ -27,8 +27,8 @@ Role Variables
 | authconfig_windomain | AD Windows Domain | "EXAMPLECOM" |
 | authconfig_computer_ou | Where to create the computer object in AD | 'ou=computers,dc=example,dc=com' |
 | See test.yml for example of hostvars |||
-| hostvars['localhost']['authconfig_sssd_name'] | Name of user to use to join domain | '' |
-| hostvars['localhost']['authconfig_sssd_pass'] | Password to use to join domain | '' |
+| authconfig_sssd_name | Name of user to use to join domain | '' |
+| authconfig_sssd_pass | Password to use to join domain | '' |
 | | |
 | authconfig_access_groups | Array of groups that have access to the host | [ ] |
 | authconfig_access_users  | Array of users that have access to the host | [ ] |
