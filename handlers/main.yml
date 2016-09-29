@@ -9,6 +9,18 @@
 #    creates: /var/lib/authconfig/backup-ansible_configured2
   notify: restart sssd
 
+- name: clear nscd
+  shell: "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group"
+
+- name: clear ssh AllowGroups
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^(AllowGroups .*)'
+    line:   '# \1'
+    backrefs: yes
+    state: present
+  notify: restart ssh
+    
 - name: restart sssd
   service:
     name: sssd

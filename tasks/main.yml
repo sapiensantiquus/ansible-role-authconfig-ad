@@ -3,9 +3,13 @@
 - set_fact:
     distro: "{{ansible_lsb.id}}-{{ansible_lsb.major_release}}"
   when: ansible_lsb.description is defined
+  tags:
+    - aad_adjoin
 - set_fact:
     distro: "{{ansible_distribution}}-{{ansible_distribution_major_version}}"
   when: ansible_lsb.description is undefined
+  tags:
+    - aad_adjoin
 
 # load version-specific variables
 - include_vars: "{{ item }}"
@@ -27,6 +31,8 @@
     group: root
     mode: 0644
     backup: yes
+  tags:
+    - aad_krb5_conf
 
 - name: sssd.conf
   template:
@@ -37,6 +43,8 @@
     mode: 0600
     backup: yes
   notify: restart sssd
+  tags:
+    - aad_sssd_conf
 
 #- name: access.conf
 #  template:
@@ -54,6 +62,8 @@
     group: root
     mode: 0644
   notify: restart ssh
+  tags:
+    - aad_ssh
   
 - name: Update sshd_config for legal thing
   lineinfile:
@@ -61,6 +71,8 @@
     line: 'Banner /etc/ssh/issue'
     regexp: '^(#|)Banner\ .*'
   notify: restart ssh
+  tags:
+    - aad_ssh
 
 #- name: enable and start sssd
 #  service:
