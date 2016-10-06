@@ -9,6 +9,13 @@
 #    creates: /var/lib/authconfig/backup-ansible_configured2
   notify: restart sssd
 
+- name: disable nslcd
+  service:
+    name: nslcd
+    enabled: false
+    state: stopped
+    ignore_errors: yes
+
 - name: clear nscd
   shell: "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group"
 

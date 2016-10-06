@@ -10,4 +10,5 @@ authconfig_packages:
   - 'pam_krb5'
   - 'authconfig'
   - 'samba-common'
+  - 'nscd'
 
