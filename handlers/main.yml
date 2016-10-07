@@ -18,6 +18,7 @@
 
 - name: clear nscd
   shell: "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group"
+  ignore_errors: yes
 
 - name: clear ssh AllowGroups
   lineinfile:
