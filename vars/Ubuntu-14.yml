@@ -1,6 +1,6 @@
 ---
 # Ubuntu 14.x packages
-authconfig_packages: 
+authconfig_packages:
   - realmd
   - adcli
   - packagekit   # Needed to work around a bug
@@ -11,4 +11,4 @@ authconfig_packages:
   - sssd-tools
   - libpam-sss
   - libnss-sss
-
+  - openssh-server
