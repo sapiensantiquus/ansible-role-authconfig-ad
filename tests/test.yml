@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  vars:
+    authconfig_debug_mode: true
+    authconfig_debug_level: 3
+    # Enter a host ip or address here to use consul in the test.
+    authconfig_consul_host: ""
+    authconfig_vars_consul_lookup: true
+  roles:
+    - role: ansible-role-module-credstash
+      secrets:
+        - secret: "{{environ}}.admgageio_sssdjoin.username"
+          region: "us-west-2"
+          fact: "authconfig_sssd_name"
+          context: "env={{environ}}"
+        - secret: "{{environ}}.admgageio_sssdjoin.password"
+          region: "us-west-2"
+          fact: "authconfig_sssd_pass"
+          context: "env={{environ}}"
+
+    - role: ansible-role-authconfig-ad
