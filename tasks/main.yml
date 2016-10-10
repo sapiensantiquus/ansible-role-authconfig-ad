@@ -11,26 +11,6 @@
   tags:
     - aad_adjoin
 
-- name: Install python-consul
-  pip:
-    name: python-consul
-    version: 0.6.1
-  when: authconfig_vars_consul_lookup is defined and authconfig_vars_consul_lookup == true 
-
-- set_fact:
-    ansible_local:
-      ksdata:
-        ad_info:
-          ad_server: "{{ lookup('consul_lookup', '{{ environ }}/ad_server url=http://{{ authconfig_consul_host }}:8500') }}"
-          ad_backup_server: "{{ lookup('consul_lookup', '{{ environ }}/ad_backup_server url=http://{{ authconfig_consul_host }}:8500') }}"
-    authconfig_domain: "{{ lookup('consul_lookup', '{{ environ }}/authconfig_domain url=http://{{ authconfig_consul_host }}:8500') }}"
-    authconfig_realm:  "{{ lookup('consul_lookup', '{{ environ }}/authconfig_realm url=http://{{ authconfig_consul_host }}:8500') }}"
-    authconfig_windomain: "{{ lookup('consul_lookup', '{{ environ }}/authconfig_windomain url=http://{{ authconfig_consul_host }}:8500') }}"
-    authconfig_computer_ou: "{{ lookup('consul_lookup', '{{ environ }}/authconfig_computer_ou url=http://{{ authconfig_consul_host }}:8500') }}"
-
-    authconfig_access_groups: "{{ lookup('consul_lookup', '{{ environ }}/authconfig_access_groups url=http://{{ authconfig_consul_host }}:8500') }}"
-  when: ansible_local is not defined and authconfig_vars_consul_lookup is defined and authconfig_vars_consul_lookup == true
-
 # load version-specific variables
 - block:
     - include_vars: "{{ item }}"
