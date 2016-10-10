@@ -28,7 +28,7 @@
     authconfig_windomain: "{{ lookup('consul_lookup', '{{ environ }}/authconfig_windomain url=http://{{ authconfig_consul_host }}:8500') }}"
     authconfig_computer_ou: "{{ lookup('consul_lookup', '{{ environ }}/authconfig_computer_ou url=http://{{ authconfig_consul_host }}:8500') }}"
 
-    authconfig_access_groups: "{{ lookup('consul_lookup', '{{ environ }}/authconfig_windomain url=http://{{ authconfig_consul_host }}:8500') }}"
+    authconfig_access_groups: "{{ lookup('consul_lookup', '{{ environ }}/authconfig_access_groups url=http://{{ authconfig_consul_host }}:8500') }}"
   when: ansible_local is not defined and authconfig_vars_consul_lookup is defined and authconfig_vars_consul_lookup == true
 
 # load version-specific variables
