@@ -12,12 +12,15 @@
     - aad_adjoin
 
 # load version-specific variables
-- include_vars: "{{ item }}"
-  with_first_found:
-    - "../vars/{{distro}}.yml"
+- block:
+    - include_vars: "{{ item }}"
+      with_first_found:
+        - "../vars/{{distro}}.yml"
+  rescue:
+    - fail: msg="Variables file for distro {{ distro }} were not found."
 
 - include: redhat.yml
-  when: ansible_distribution == 'Redhat' or ansible_distribution == 'CentOS'
+  when: ansible_distribution == 'Redhat' or ansible_distribution == 'CentOS' or ansible_distribution == "Amazon"
 
 - include: ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
@@ -64,12 +67,21 @@
   notify: restart ssh
   tags:
     - aad_ssh
-  
+
 - name: Update sshd_config for legal thing
   lineinfile:
     dest: /etc/ssh/sshd_config
     line: 'Banner /etc/ssh/issue'
     regexp: '^(#|)Banner\ .*'
+  notify: restart ssh
+  tags:
+    - aad_ssh
+
+- name: Update sshd_config to allow PasswordAuthentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: 'PasswordAuthentication yes'
+    regexp: '^(#|)PasswordAuthentication\ .*'
   notify: restart ssh
   tags:
     - aad_ssh

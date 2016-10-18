@@ -34,7 +34,8 @@
     - "clear nscd"
     - "clear ssh AllowGroups"
     - "disable nslcd"  # Previous ldap systems have this running and it seems to do "odd"
-    - "restart sssd" 
+    - "restart sssd"
+    - "restart dbus"
     - "restart oddjob"
   tags:
     - aad_authconfig
@@ -68,5 +69,3 @@
   lineinfile:
     dest: /etc/hosts
     line: "{{ ansible_default_ipv4.address }}  {{ ansible_hostname }}.{{ authconfig_domain }} {{ ansible_hostname }}"
-  
-  
