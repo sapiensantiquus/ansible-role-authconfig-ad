@@ -74,6 +74,8 @@
   tags:
     - aad_ssh
 
+- meta: flush_handlers
+
 #- name: enable and start sssd
 #  service:
 #    name: sssd
@@ -95,4 +97,4 @@
 #    regexp: '^(#|)PasswordAuthentication\ .*'
 #  notify: restart ssh
 
-- include: test.yml
+#- include: test.yml

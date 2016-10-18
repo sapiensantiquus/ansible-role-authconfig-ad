@@ -14,7 +14,8 @@
     name: nslcd
     enabled: false
     state: stopped
-    ignore_errors: yes
+  ignore_errors: false
+  failed_when: false
 
 - name: clear nscd
   shell: "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group"
