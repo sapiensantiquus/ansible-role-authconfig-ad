@@ -1,7 +1,7 @@
 ---
 
 - name: auth packages
-  apt: 
+  apt:
     name: "{{ item }}"
     update_cache: true
   with_items: "{{ authconfig_packages }}"
