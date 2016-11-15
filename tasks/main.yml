@@ -86,6 +86,15 @@
   tags:
     - aad_ssh
 
+- name: Update sshd_config to remove old PasswordAuthentication no if exists
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: 'PasswordAuthentication no'
+    state: absent
+  notify: restart ssh
+  tags:
+    - aad_ssh
+
 - meta: flush_handlers
 
 #- name: enable and start sssd
