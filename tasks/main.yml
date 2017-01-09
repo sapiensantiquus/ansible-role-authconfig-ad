@@ -95,7 +95,6 @@
   tags:
     - aad_ssh
 
-- meta: flush_handlers
 
 #- name: enable and start sssd
 #  service:
@@ -119,3 +118,29 @@
 #  notify: restart ssh
 
 #- include: test.yml
+
+- name: Update hostname
+  lineinfile:
+    dest: /etc/rc.local
+    line: "sed -i \"s/ad_hostname.*/ad_hostname = $(hostname)/g\" /etc/sssd/sssd.conf"
+  when: ad_build_image is defined and ad_build_image == 'yes'
+
+- name: Join Domain
+  lineinfile:
+    dest: /etc/rc.local
+    line:   "adcli join --no-password --domain-ou={{ authconfig_computer_ou }} --login-user={{ authconfig_sssd_name }} -S  {{ad_info.ad_server}} {{ authconfig_domain }}"
+  when: ad_build_image is defined and ad_build_image == 'yes'
+
+- name: Update sshd_config to allow PasswordAuthentication
+  lineinfile:
+    dest: /etc/rc.local
+    line: "sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config"
+  when: ad_build_image is defined and ad_build_image == 'yes'
+
+- name: Restart sshd
+  lineinfile:
+    dest: /etc/rc.local
+    line: "service sshd restart"
+  when: ad_build_image is defined and ad_build_image == 'yes'
+
+- meta: flush_handlers

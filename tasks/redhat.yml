@@ -15,6 +15,7 @@
   tags:
     - aad_adjoin
     - aad_agent
+  when: ad_build_image is not defined or ad_build_image == 'no'
 
 # Save backup here since --savebackup is naughty.
 - name: authconfig
